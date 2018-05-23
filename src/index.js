@@ -1,5 +1,6 @@
 const deepcopy = require('deepcopy');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
+const chalk = require('chalk');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
 const BABEL_LOADER_NAME = 'babel-loader';
@@ -59,6 +60,7 @@ class BabelEsmPlugin {
       }
     });
     if (!found) {
+      console.log(chalk.yellow('Adding @babel/preset-env because it was not found in babel-loader config'));
       options.presets.push(['@babel/preset-env', {targets: {"esmodules": true}}])
     }
     return options;
