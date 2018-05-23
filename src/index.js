@@ -40,17 +40,25 @@ class BabelEsmPlugin {
 			if (!babelConfig && ((rule.use || {}).loader === BABEL_LOADER_NAME || rule.loader === BABEL_LOADER_NAME)) {
 				babelConfig = rule.use || rule;
 			}
-		});
+    });
+    if(!babelConfig) {
+      throw new Error('Babel-loader config not found!!!');
+    }
 		return deepcopy(babelConfig.options);
 	}
 
 	makeESMPresetOptions(options) {
+    let found = false;
 		options.presets.forEach(preset => {
 			if (preset[0] === '@babel/preset-env') {
+        found = true;
 				preset[1].targets = preset[1].targets || {};
 				preset[1].targets = {"esmodules": true};
 			}
-		});
+    });
+    if (!found) {
+      throw new Error('@babel/preset-env not found in config')
+    }
 		return options;
 	}
 }
