@@ -1,0 +1,26 @@
+{
+  "name": "babel-esm-plugin",
+  "version": "0.0.1",
+  "description": "Add this plugin to generate mirrored esm modules for your existing bundles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prateekbh/babel-esm-plugin.git"
+  },
+  "keywords": [],
+  "author": "Prateek Bhatnagar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/prateekbh/babel-esm-plugin/issues"
+  },
+  "homepage": "https://github.com/prateekbh/babel-esm-plugin#readme",
+  "dependencies": {
+    "deepcopy": "^1.0.0"
+  },
+  "peerDependencies": {
+    "webpack": "^4.8.3"
+  }
+}

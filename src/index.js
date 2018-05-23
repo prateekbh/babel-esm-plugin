@@ -1,10 +1,10 @@
 const deepcopy = require('deepcopy');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 
-const PLUGIN_NAME = 'MyPlugin';
+const PLUGIN_NAME = 'BabelEsmPlugin';
 const BABEL_LOADER_NAME = 'babel-loader';
 
-class MyPlugin {
+class BabelEsmPlugin {
 	apply(compiler) {
 
 		compiler.hooks.make.tapAsync(PLUGIN_NAME, (compilation, callback) => {
@@ -55,4 +55,4 @@ class MyPlugin {
 	}
 }
 
-module.exports = MyPlugin;
+module.exports = BabelEsmPlugin;
