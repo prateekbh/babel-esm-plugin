@@ -1,6 +1,10 @@
 # babel-esm-plugin
 Add this plugin to generate mirrored esm modules for your existing bundles. You may use these bundles in `module/nomodule` in your web-app and ship less transpiled code to your users.
 
+```
+npm i -D babel-esm-plugin
+```
+
 ## Without this plugin
 A usual output from webpack output looks like this:
 ![ES5 output](https://raw.githubusercontent.com/prateekbh/babel-esm-plugin/master/images/es5-screenshot.png)
