@@ -5,11 +5,13 @@ const chalk = require('chalk');
 const PLUGIN_NAME = 'BabelEsmPlugin';
 const BABEL_LOADER_NAME = 'babel-loader';
 const FILENAME = '[name].es6.js';
+const CHUNK_FILENAME = '[id].es6.js';
 
 class BabelEsmPlugin {
   constructor(options) {
     this.options_ = Object.assign({
-      filename: FILENAME
+      filename: FILENAME,
+      chunkFilename: CHUNK_FILENAME
     }, options);
   }
 
@@ -19,6 +21,7 @@ class BabelEsmPlugin {
       this.babelLoaderConfigOptions_ = this.getBabelLoaderOptions(outputOptions);
       this.newConfigOptions_ = this.makeESMPresetOptions(this.babelLoaderConfigOptions_);
       outputOptions.output.filename = this.options_.filename;
+      outputOptions.output.chunkFilename = this.options_.chunkFilename;
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output);
       childCompiler.context = compiler.context;
       Object.keys(compiler.options.entry).forEach(entry => {
