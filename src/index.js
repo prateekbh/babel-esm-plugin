@@ -4,15 +4,21 @@ const chalk = require('chalk');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
 const BABEL_LOADER_NAME = 'babel-loader';
+const FILENAME = '[name].es6.js';
 
 class BabelEsmPlugin {
-  apply(compiler) {
+  constructor(options) {
+    this.options_ = Object.assign({
+      filename: FILENAME
+    }, options);
+  }
 
+  apply(compiler) {
     compiler.hooks.make.tapAsync(PLUGIN_NAME, (compilation, callback) => {
       const outputOptions = deepcopy(compiler.options);
       this.babelLoaderConfigOptions_ = this.getBabelLoaderOptions(outputOptions);
       this.newConfigOptions_ = this.makeESMPresetOptions(this.babelLoaderConfigOptions_);
-      outputOptions.output.filename = '[name].mjs';
+      outputOptions.output.filename = this.options_.filename;
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output);
       childCompiler.context = compiler.context;
       Object.keys(compiler.options.entry).forEach(entry => {
@@ -33,7 +39,8 @@ class BabelEsmPlugin {
   }
 
   /**
-   * Returns a copy of current babel-loader config
+   * Returns a copy of current babel-loader config.
+   * @param {Object} config
    */
   getBabelLoaderOptions(config) {
     let babelConfig = null;
@@ -42,12 +49,16 @@ class BabelEsmPlugin {
         babelConfig = rule.use || rule;
       }
     });
-    if(!babelConfig) {
+    if (!babelConfig) {
       throw new Error('Babel-loader config not found!!!');
     }
     return deepcopy(babelConfig.options);
   }
 
+  /**
+   * Takes the current options and returns it with @babel/preset-env's target set to {"esmodules": true}.
+   * @param {Object} options
+   */
   makeESMPresetOptions(options) {
     let found = false;
     options = options || {};
@@ -56,12 +67,12 @@ class BabelEsmPlugin {
       if (preset[0] === '@babel/preset-env') {
         found = true;
         preset[1].targets = preset[1].targets || {};
-        preset[1].targets = {"esmodules": true};
+        preset[1].targets = { "esmodules": true };
       }
     });
     if (!found) {
-      console.log(chalk.yellow('Adding @babel/preset-env because it was not found in babel-loader config'));
-      options.presets.push(['@babel/preset-env', {targets: {"esmodules": true}}])
+      console.log(chalk.yellow('Adding @babel/preset-env because it was not found'));
+      options.presets.push(['@babel/preset-env', { targets: { "esmodules": true } }])
     }
     return options;
   }
