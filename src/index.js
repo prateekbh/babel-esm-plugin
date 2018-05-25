@@ -35,6 +35,7 @@ class BabelEsmPlugin {
           }
         });
         childCompiler.runAsChild((err, entries, childCompilation) => {
+          err && childCompiler.parentCompilation.errors.push(err);
         });
       });
       callback();
