@@ -1,5 +1,6 @@
 const deepcopy = require('deepcopy');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
+const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
 const chalk = require('chalk');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
@@ -11,7 +12,8 @@ class BabelEsmPlugin {
   constructor(options) {
     this.options_ = Object.assign({
       filename: FILENAME,
-      chunkFilename: CHUNK_FILENAME
+      chunkFilename: CHUNK_FILENAME,
+      excludedPlugins: ['MiniCssExtractPlugin']
     }, options);
   }
 
@@ -23,15 +25,19 @@ class BabelEsmPlugin {
       outputOptions.output.filename = this.options_.filename;
       outputOptions.output.chunkFilename = this.options_.chunkFilename;
       // Only copy over mini-extract-text-plugin (excluding it breaks extraction entirely)
-      const plugins = (compiler.options.plugins || []).filter(c => /MiniCssExtractPlugin/i.test(c.constructor.name));
-      
+      const plugins = (compiler.options.plugins || []).filter(c => this.options_.excludedPlugins.indexOf(c.constructor.name) < 0);
+
       // Compile to an in-memory filesystem since we just want the resulting bundled code as a string
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
-      
+
       childCompiler.context = compiler.context;
       Object.keys(compiler.options.entry).forEach(entry => {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
       });
+
+      // Convert entry chunk to entry file
+      childCompiler.apply(new JsonpTemplatePlugin());
+
       compilation.hooks.seal.tap(PLUGIN_NAME, () => {
         childCompiler.options.module.rules.forEach((rule, index) => {
           if ((rule.use || {}).loader === BABEL_LOADER_NAME || rule.loader === BABEL_LOADER_NAME) {
