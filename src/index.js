@@ -22,7 +22,12 @@ class BabelEsmPlugin {
       this.newConfigOptions_ = this.makeESMPresetOptions(this.babelLoaderConfigOptions_);
       outputOptions.output.filename = this.options_.filename;
       outputOptions.output.chunkFilename = this.options_.chunkFilename;
-      const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output);
+      // Only copy over mini-extract-text-plugin (excluding it breaks extraction entirely)
+      const plugins = (compiler.options.plugins || []).filter(c => /MiniCssExtractPlugin/i.test(c.constructor.name));
+      
+      // Compile to an in-memory filesystem since we just want the resulting bundled code as a string
+      const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
+      
       childCompiler.context = compiler.context;
       Object.keys(compiler.options.entry).forEach(entry => {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
