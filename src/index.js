@@ -13,7 +13,7 @@ class BabelEsmPlugin {
     this.options_ = Object.assign({
       filename: FILENAME,
       chunkFilename: CHUNK_FILENAME,
-      excludedPlugins: ['MiniCssExtractPlugin']
+      excludedPlugins: ['MiniCssExtractPlugin', PLUGIN_NAME]
     }, options);
   }
 
@@ -31,6 +31,7 @@ class BabelEsmPlugin {
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
 
       childCompiler.context = compiler.context;
+      let name, path;
       Object.keys(compiler.options.entry).forEach(entry => {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
       });
@@ -79,7 +80,7 @@ class BabelEsmPlugin {
     options = options || {};
     options.presets = options.presets || [];
     options.presets.forEach(preset => {
-      if (preset[0] === '@babel/preset-env') {
+      if (preset[0].indexOf('@babel/preset-env') > -1) {
         found = true;
         preset[1].targets = preset[1].targets || {};
         preset[1].targets = { "esmodules": true };
