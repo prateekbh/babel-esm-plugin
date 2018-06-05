@@ -13,7 +13,7 @@ class BabelEsmPlugin {
     this.options_ = Object.assign({
       filename: FILENAME,
       chunkFilename: CHUNK_FILENAME,
-      excludedPlugins: ['MiniCssExtractPlugin', PLUGIN_NAME]
+      excludedPlugins: [PLUGIN_NAME]
     }, options);
   }
 
