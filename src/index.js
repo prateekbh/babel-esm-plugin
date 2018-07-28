@@ -13,7 +13,8 @@ class BabelEsmPlugin {
     this.options_ = Object.assign({
       filename: FILENAME,
       chunkFilename: CHUNK_FILENAME,
-      excludedPlugins: [PLUGIN_NAME]
+      excludedPlugins: [PLUGIN_NAME],
+      additionalPlugins: []
     }, options);
   }
 
@@ -25,7 +26,10 @@ class BabelEsmPlugin {
       outputOptions.output.filename = this.options_.filename;
       outputOptions.output.chunkFilename = this.options_.chunkFilename;
       // Only copy over mini-extract-text-plugin (excluding it breaks extraction entirely)
-      const plugins = (compiler.options.plugins || []).filter(c => this.options_.excludedPlugins.indexOf(c.constructor.name) < 0);
+      let plugins = (compiler.options.plugins || []).filter(c => this.options_.excludedPlugins.indexOf(c.constructor.name) < 0);
+
+      // Add the additionalPlugins
+      plugins = plugins.concat(this.options_.additionalPlugins);
 
       // Compile to an in-memory filesystem since we just want the resulting bundled code as a string
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
