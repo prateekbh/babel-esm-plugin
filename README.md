@@ -16,12 +16,14 @@ new BabelEsmPlugin({
   chunkFilename: '[id].es6.js',
   excludedPlugins: [...],
   additionalPlugins: [...],
+  beforeStartExecution: function(plugins) {}
 });
 ```
 1. `filename`: Output name of es6 bundles. (default: '[name].es6.js')
 2. `chunkFilename`: Output name of es6 chunks. (default: '[id].es6.js')
 3. `excludedPlugins`: List of plugins you want to exclude from generating es6 bundles.
 4. `additionalPlugins`: List of plugins you want to add while generating es6 bundles.
+5. `beforeStartExecution`: A callback function which passes all plugins to the function where the user can modify them before starting the `ESM` build.
 
 ## Without this plugin
 A usual output from webpack output looks like this:

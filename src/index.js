@@ -50,6 +50,9 @@ class BabelEsmPlugin {
             babelOptions.options = this.newConfigOptions_;
           }
         });
+
+        this.options_.beforeStartExecution && this.options_.beforeStartExecution(plugins);
+
         childCompiler.runAsChild((err, entries, childCompilation) => {
           err && childCompiler.parentCompilation.errors.push(err);
         });
