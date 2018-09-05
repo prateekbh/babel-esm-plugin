@@ -54,6 +54,11 @@ class BabelEsmPlugin {
         this.options_.beforeStartExecution && this.options_.beforeStartExecution(plugins);
 
         childCompiler.runAsChild((err, entries, childCompilation) => {
+          if (!err) {
+            childCompiler.parentCompilation.assets = Object.assign(childCompilation.assets,
+              childCompiler.parentCompilation.assets
+            );
+          }
           err && childCompiler.parentCompilation.errors.push(err);
         });
       });
