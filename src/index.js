@@ -43,7 +43,7 @@ class BabelEsmPlugin {
       // Convert entry chunk to entry file
       childCompiler.apply(new JsonpTemplatePlugin());
 
-      compilation.hooks.seal.tap(PLUGIN_NAME, () => {
+      compilation.hooks.additionalAssets.tapAsync(PLUGIN_NAME, (childProcessDone) => {
         childCompiler.options.module.rules.forEach((rule, index) => {
           if ((rule.use || {}).loader === BABEL_LOADER_NAME || rule.loader === BABEL_LOADER_NAME) {
             const babelOptions = rule.use || rule;
@@ -55,11 +55,12 @@ class BabelEsmPlugin {
 
         childCompiler.runAsChild((err, entries, childCompilation) => {
           if (!err) {
-            childCompiler.parentCompilation.assets = Object.assign(childCompilation.assets,
-              childCompiler.parentCompilation.assets
+            compilation.assets = Object.assign(childCompilation.assets,
+              compilation.assets
             );
           }
-          err && childCompiler.parentCompilation.errors.push(err);
+          err && compilation.errors.push(err);
+          childProcessDone();
         });
       });
       callback();
