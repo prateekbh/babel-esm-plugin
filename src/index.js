@@ -1,6 +1,7 @@
 const deepcopy = require('deepcopy');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
+const SplitChunksPlugin = require('webpack/lib/optimize/SplitChunksPlugin');
 const chalk = require('chalk');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
@@ -35,13 +36,24 @@ class BabelEsmPlugin {
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
 
       childCompiler.context = compiler.context;
-      let name, path;
+
       Object.keys(compiler.options.entry).forEach(entry => {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
       });
 
       // Convert entry chunk to entry file
       childCompiler.apply(new JsonpTemplatePlugin());
+
+      if (compiler.options.optimization) {
+        if (compiler.options.optimization.splitChunks) {
+          new SplitChunksPlugin(
+            Object.assign(
+              {},
+              compiler.options.optimization.splitChunks,
+            )
+          ).apply(childCompiler);
+        }
+      }
 
       compilation.hooks.additionalAssets.tapAsync(PLUGIN_NAME, (childProcessDone) => {
         childCompiler.options.module.rules.forEach((rule, index) => {

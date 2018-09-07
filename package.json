@@ -1,6 +1,6 @@
 {
   "name": "babel-esm-plugin",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Add this plugin to generate mirrored esm modules for your existing bundles",
   "main": "src/index.js",
   "scripts": {
