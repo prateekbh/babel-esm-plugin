@@ -57,10 +57,7 @@ class BabelEsmPlugin {
 
       compilation.hooks.additionalAssets.tapAsync(PLUGIN_NAME, (childProcessDone) => {
         childCompiler.options.module.rules.forEach((rule, index) => {
-          if ((rule.use || {}).loader === BABEL_LOADER_NAME || rule.loader === BABEL_LOADER_NAME) {
-            const babelOptions = rule.use || rule;
-            babelOptions.options = this.newConfigOptions_;
-          }
+          this.getBabelLoader(childCompiler.options).options = this.newConfigOptions_;
         });
 
         this.options_.beforeStartExecution && this.options_.beforeStartExecution(plugins);
@@ -80,20 +77,37 @@ class BabelEsmPlugin {
   }
 
   /**
-   * Returns a copy of current babel-loader config.
+   * Returns a ref to babel-config
    * @param {Object} config
    */
-  getBabelLoaderOptions(config) {
+  getBabelLoader(config) {
     let babelConfig = null;
     config.module.rules.forEach(rule => {
-      if (!babelConfig && ((rule.use || {}).loader === BABEL_LOADER_NAME || rule.loader === BABEL_LOADER_NAME)) {
-        babelConfig = rule.use || rule;
+      if (!babelConfig) {
+        if (rule.use && Array.isArray(rule.use)) {
+          rule.use.forEach(rule => {
+            if (rule.loader === BABEL_LOADER_NAME) {
+              babelConfig = rule;
+            }
+          });
+        } else if ((rule.use && rule.use.loader && rule.use.loader === BABEL_LOADER_NAME) || rule.loader === BABEL_LOADER_NAME) {
+          babelConfig = rule.use || rule;
+        }
       }
     });
     if (!babelConfig) {
       throw new Error('Babel-loader config not found!!!');
+    } else {
+      return babelConfig;
     }
-    return deepcopy(babelConfig.options);
+  }
+
+  /**
+   * Returns a copy of current babel-loader config.
+   * @param {Object} config
+   */
+  getBabelLoaderOptions(config) {
+    return deepcopy(this.getBabelLoader(config).options);
   }
 
   /**

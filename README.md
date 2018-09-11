@@ -9,6 +9,23 @@ npm i -D babel-esm-plugin
 ### Note
 This plugin only works when you're already using `babel-preset-env`.
 
+Also, there is an expectation that your `babel-preset-env` is configured in the shape:
+```
+{
+  use: {
+    loader: 'babel-loader',
+    options: {
+      "presets": [["@babel/preset-env", {
+        "targets": {
+          "browsers": ["last 2 versions", "safari >= 7"]
+        }
+        ....
+      }]]
+    },
+  },
+}
+```
+
 ## Options
 ```js
 new BabelEsmPlugin({
