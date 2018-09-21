@@ -41,10 +41,6 @@ class BabelEsmPlugin {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
       });
 
-      compilation.namedChunkGroups = Object.assign(childCompilation.namedChunkGroups,
-        compilation.namedChunkGroups
-      );
-
       // Convert entry chunk to entry file
       childCompiler.apply(new JsonpTemplatePlugin());
 
