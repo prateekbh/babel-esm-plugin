@@ -71,6 +71,10 @@ class BabelEsmPlugin {
             compilation.assets = Object.assign(childCompilation.assets,
               compilation.assets
             );
+            compilation.namedChunkGroups = Object.assign(
+              childCompilation.namedChunkGroups,
+              compilation.namedChunkGroups
+            );
           }
           err && compilation.errors.push(err);
           childProcessDone();
