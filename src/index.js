@@ -56,11 +56,13 @@ class BabelEsmPlugin {
       }
 
       compilation.hooks.additionalAssets.tapAsync(PLUGIN_NAME, (childProcessDone) => {
+        let babelLoader;
         childCompiler.options.module.rules.forEach((rule, index) => {
-          this.getBabelLoader(childCompiler.options).options = this.newConfigOptions_;
+          babelLoader = this.getBabelLoader(childCompiler.options);
+          babelLoader.options = this.newConfigOptions_;
         });
 
-        this.options_.beforeStartExecution && this.options_.beforeStartExecution(plugins);
+        this.options_.beforeStartExecution && this.options_.beforeStartExecution(plugins, (babelLoader || {}).options);
 
         childCompiler.runAsChild((err, entries, childCompilation) => {
           if (!err) {
