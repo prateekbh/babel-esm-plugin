@@ -34,9 +34,9 @@ class BabelEsmPlugin {
 
       // Compile to an in-memory filesystem since we just want the resulting bundled code as a string
       const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
-
       childCompiler.context = compiler.context;
 
+      childCompiler.inputFileSystem = compiler.inputFileSystem;
       Object.keys(compiler.options.entry).forEach(entry => {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
       });
