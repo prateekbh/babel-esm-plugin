@@ -32,11 +32,26 @@ class BabelEsmPlugin {
       // Add the additionalPlugins
       plugins = plugins.concat(this.options_.additionalPlugins);
 
-      // Compile to an in-memory filesystem since we just want the resulting bundled code as a string
-      const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output, plugins);
-      childCompiler.context = compiler.context;
+      /**
+       * We are deliberatly not passing plugins in createChildCompiler.
+       * All webpack does with plugins is to call `apply` method on them
+       * with the childCompiler.
+       * But by then we haven't given childCompiler a fileSystem or other options
+       * which a few plugins might expect while execution the apply method.
+       * We do call the `apply` method of all plugins by ourselves later in the code
+       */
+      const childCompiler = compilation.createChildCompiler(PLUGIN_NAME, outputOptions.output);
 
+      childCompiler.context = compiler.context;
       childCompiler.inputFileSystem = compiler.inputFileSystem;
+
+      // Call the `apply` method of all plugins by ourselves.
+      if (Array.isArray(plugins)) {
+        for (const plugin of plugins) {
+          plugin.apply(childCompiler);
+        }
+      }
+
       Object.keys(compiler.options.entry).forEach(entry => {
         childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
       });
