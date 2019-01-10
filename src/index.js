@@ -1,5 +1,6 @@
 const deepcopy = require('deepcopy');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
+const MultiEntryPlugin = require('webpack/lib/MultiEntryPlugin');
 const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
 const SplitChunksPlugin = require('webpack/lib/optimize/SplitChunksPlugin');
 const chalk = require('chalk');
@@ -53,7 +54,12 @@ class BabelEsmPlugin {
       }
 
       Object.keys(compiler.options.entry).forEach(entry => {
-        childCompiler.apply(new SingleEntryPlugin(compiler.context, compiler.options.entry[entry], entry));
+        const entryFiles = compiler.options.entry[entry]
+        if (Array.isArray(entryFiles)) {
+          childCompiler.apply(new MultiEntryPlugin(compiler.context, entryFiles, entry));
+        } else {
+          childCompiler.apply(new SingleEntryPlugin(compiler.context, entryFiles, entry));
+        }
       });
 
       // Convert entry chunk to entry file
