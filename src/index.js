@@ -107,11 +107,11 @@ class BabelEsmPlugin {
       if (!babelConfig) {
         if (rule.use && Array.isArray(rule.use)) {
           rule.use.forEach(rule => {
-            if (rule.loader === BABEL_LOADER_NAME) {
+            if (rule.loader.includes(BABEL_LOADER_NAME)) {
               babelConfig = rule;
             }
           });
-        } else if ((rule.use && rule.use.loader && rule.use.loader === BABEL_LOADER_NAME) || rule.loader === BABEL_LOADER_NAME) {
+        } else if ((rule.use && rule.use.loader && rule.use.loader.includes(BABEL_LOADER_NAME)) || rule.loader.includes(BABEL_LOADER_NAME)) {
           babelConfig = rule.use || rule;
         }
       }
@@ -140,7 +140,9 @@ class BabelEsmPlugin {
     options = options || {};
     options.presets = options.presets || [];
     options.presets.forEach(preset => {
-      if (preset[0].indexOf('@babel/preset-env') > -1) {
+      if (!Array.isArray(preset)) return;
+      const [name, options] = preset;
+      if (name.includes('@babel/preset-env') || name.includes('@babel\\preset-env')) {
         found = true;
         preset[1].targets = preset[1].targets || {};
         preset[1].targets = { "esmodules": true };
