@@ -144,7 +144,7 @@ class BabelEsmPlugin {
       const [name, options] = preset;
       if (name.includes('@babel/preset-env') || name.includes('@babel\\preset-env')) {
         found = true;
-        options.targets = preset[1].targets || {};
+        options.targets = options.targets || {};
         options.targets = { "esmodules": true };
       }
     });
