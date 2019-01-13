@@ -4,7 +4,7 @@
   "description": "Add this plugin to generate mirrored esm modules for your existing bundles",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava tests/**/*.test.js --verbose"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,19 @@
   },
   "homepage": "https://github.com/prateekbh/babel-esm-plugin#readme",
   "dependencies": {
-    "deepcopy": "^1.0.0"
+    "ava": "^1.0.1",
+    "deepcopy": "^1.0.0",
+    "webpack": "^4.28.4"
   },
   "peerDependencies": {
-    "webpack": "^4.8.3"
+    "webpack": "^4.28.4"
   },
   "devDependencies": {
-    "chalk": "^2.4.1"
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babel-loader": "^8.0.5",
+    "chalk": "^2.4.1",
+    "esm": "^3.0.84",
+    "webpack-cli": "^3.2.1"
   }
 }
