@@ -19,7 +19,6 @@ test('esm files are being generated', async t => {
     }
   });
   config.module.rules[0].use.loader = require.resolve('babel-loader');
-  console.log(config.module.rules[0].use.loader);
   const compiler = getCompiler(config);
   await runWebpack(compiler);
   const es5FixtureFileContents = await readFile(`${__dirname}/fixtures/output.js`, {
