@@ -1,16 +1,29 @@
 const webpack = require('webpack');
+const BabelEsmPlugin = require('../src/index');
 
 const defaultConfig = {
-  test: /\.js$/,
-  use: {
-    loader: 'babel-loader',
-    options: {
-      "presets": [["@babel/preset-env", {
-        "targets": {
-          "browsers": ["last 2 versions", "safari >= 7"]
-        }
-      }]]
-    },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            "presets": [["@babel/preset-env", {
+              "targets": {
+                "browsers": ["last 2 versions"]
+              }
+            }]]
+          },
+        },
+      }
+    ]
+  },
+  plugins: [
+    new BabelEsmPlugin({})
+  ],
+  optimization: {
+    minimize: false
   },
 };
 
