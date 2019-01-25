@@ -56,14 +56,14 @@ class BabelEsmPlugin {
       Object.keys(compiler.options.entry).forEach(entry => {
         const entryFiles = compiler.options.entry[entry]
         if (Array.isArray(entryFiles)) {
-          childCompiler.apply(new MultiEntryPlugin(compiler.context, entryFiles, entry));
+          new MultiEntryPlugin(compiler.context, entryFiles, entry).apply(childCompiler);
         } else {
-          childCompiler.apply(new SingleEntryPlugin(compiler.context, entryFiles, entry));
+          new SingleEntryPlugin(compiler.context, entryFiles, entry).apply(childCompiler);
         }
       });
 
       // Convert entry chunk to entry file
-      childCompiler.apply(new JsonpTemplatePlugin());
+      new JsonpTemplatePlugin().apply(childCompiler);
 
       if (compiler.options.optimization) {
         if (compiler.options.optimization.splitChunks) {
