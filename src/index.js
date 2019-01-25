@@ -63,7 +63,7 @@ class BabelEsmPlugin {
       });
 
       // Convert entry chunk to entry file
-      new JsonpTemplatePlugin().apply();
+      new JsonpTemplatePlugin().apply(childCompiler);
 
       if (compiler.options.optimization) {
         if (compiler.options.optimization.splitChunks) {
