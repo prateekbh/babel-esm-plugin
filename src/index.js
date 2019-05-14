@@ -45,6 +45,7 @@ class BabelEsmPlugin {
 
       childCompiler.context = compiler.context;
       childCompiler.inputFileSystem = compiler.inputFileSystem;
+      childCompiler.outputFileSystem = compiler.outputFileSystem;
 
       // Call the `apply` method of all plugins by ourselves.
       if (Array.isArray(plugins)) {
