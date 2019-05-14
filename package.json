@@ -31,7 +31,7 @@
     "babel-loader": "^8.0.5",
     "chalk": "^2.4.1",
     "esm": "^3.0.84",
-    "release-it": "^9.8.0",
+    "release-it": "^12.0.1",
     "webpack-cli": "^3.2.1"
   }
 }
