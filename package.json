@@ -38,7 +38,11 @@
     "webpack-cli": "^3.2.1"
   },
   "lint-staged": {
-    "{src, tests}/**/*.js": [
+    "src/**/*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "tests/**/*.test.js": [
       "prettier --write",
       "git add"
     ]
