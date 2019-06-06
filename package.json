@@ -18,9 +18,8 @@
   },
   "homepage": "https://github.com/prateekbh/babel-esm-plugin#readme",
   "dependencies": {
-    "ava": "^1.0.1",
-    "deepcopy": "^1.0.0",
-    "webpack": "^4.28.4"
+    "chalk": "^2.4.1",
+    "deepcopy": "^1.0.0"
   },
   "peerDependencies": {
     "webpack": "^4.28.4"
@@ -28,10 +27,12 @@
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
+    "ava": "^1.0.1",
     "babel-loader": "^8.0.5",
-    "chalk": "^2.4.1",
+
     "esm": "^3.0.84",
     "release-it": "^12.0.1",
+    "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"
   }
 }
