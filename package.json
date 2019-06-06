@@ -38,10 +38,12 @@
     "webpack-cli": "^3.2.1"
   },
   "lint-staged": {
-    "{src,tests}/**/*.js": [
-      "prettier --write",
-      "git add"
-    ],
+    "linters": {
+      "{src,tests}/**/*.js": [
+        "prettier --write",
+        "git add"
+      ]
+    },
     "ignore": ["tests/**/fixtures/*.js"]
   },
   "husky": {
