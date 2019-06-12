@@ -67,25 +67,23 @@ class BabelEsmPlugin {
       }
 
       if (typeof compiler.options.entry === 'string') {
-        new SingleEntryPlugin(
-          compiler.context,
-          compiler.options.entry,
-          'index',
-        ).apply(childCompiler);
-      } else {
-        Object.keys(compiler.options.entry).forEach(entry => {
-          const entryFiles = compiler.options.entry[entry];
-          if (Array.isArray(entryFiles)) {
-            new MultiEntryPlugin(compiler.context, entryFiles, entry).apply(
-              childCompiler,
-            );
-          } else {
-            new SingleEntryPlugin(compiler.context, entryFiles, entry).apply(
-              childCompiler,
-            );
-          }
-        });
+        compiler.options.entry = {
+          index: compiler.options.entry,
+        };
       }
+
+      Object.keys(compiler.options.entry).forEach(entry => {
+        const entryFiles = compiler.options.entry[entry];
+        if (Array.isArray(entryFiles)) {
+          new MultiEntryPlugin(compiler.context, entryFiles, entry).apply(
+            childCompiler,
+          );
+        } else {
+          new SingleEntryPlugin(compiler.context, entryFiles, entry).apply(
+            childCompiler,
+          );
+        }
+      });
 
       // Convert entry chunk to entry file
       new JsonpTemplatePlugin().apply(childCompiler);
