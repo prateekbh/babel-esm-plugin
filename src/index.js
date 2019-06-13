@@ -66,6 +66,12 @@ class BabelEsmPlugin {
         }
       }
 
+      if (typeof compiler.options.entry === 'string') {
+        compiler.options.entry = {
+          index: compiler.options.entry,
+        };
+      }
+
       Object.keys(compiler.options.entry).forEach(entry => {
         const entryFiles = compiler.options.entry[entry];
         if (Array.isArray(entryFiles)) {
