@@ -3,6 +3,7 @@ const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 const MultiEntryPlugin = require('webpack/lib/MultiEntryPlugin');
 const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
 const SplitChunksPlugin = require('webpack/lib/optimize/SplitChunksPlugin');
+const RuntimeChunkPlugin = require('webpack/lib/optimize/RuntimeChunkPlugin');
 const chalk = require('chalk');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
@@ -24,7 +25,7 @@ class BabelEsmPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.make.tapAsync(PLUGIN_NAME, (compilation, callback) => {
+    compiler.hooks.make.tapAsync(PLUGIN_NAME, async (compilation, callback) => {
       const outputOptions = deepcopy(compiler.options);
       this.babelLoaderConfigOptions_ = this.getBabelLoaderOptions(
         outputOptions,
@@ -66,14 +67,18 @@ class BabelEsmPlugin {
         }
       }
 
-      if (typeof compiler.options.entry === 'string') {
-        compiler.options.entry = {
-          index: compiler.options.entry,
+      let entries = compiler.options.entry;
+      if (typeof entries === 'function') {
+        entries = await entries();
+      }
+      if (typeof entries === 'string') {
+        entries = {
+          index: entries,
         };
       }
 
-      Object.keys(compiler.options.entry).forEach(entry => {
-        const entryFiles = compiler.options.entry[entry];
+      Object.keys(entries).forEach(entry => {
+        const entryFiles = entries[entry];
         if (Array.isArray(entryFiles)) {
           new MultiEntryPlugin(compiler.context, entryFiles, entry).apply(
             childCompiler,
@@ -92,6 +97,11 @@ class BabelEsmPlugin {
         if (compiler.options.optimization.splitChunks) {
           new SplitChunksPlugin(
             Object.assign({}, compiler.options.optimization.splitChunks),
+          ).apply(childCompiler);
+        }
+        if (compiler.options.optimization.runtimeChunk) {
+          new RuntimeChunkPlugin(
+            Object.assign({}, compiler.options.optimization.runtimeChunk),
           ).apply(childCompiler);
         }
       }
