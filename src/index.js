@@ -3,6 +3,7 @@ const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 const MultiEntryPlugin = require('webpack/lib/MultiEntryPlugin');
 const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
 const SplitChunksPlugin = require('webpack/lib/optimize/SplitChunksPlugin');
+const RuntimeChunkPlugin = require('webpack/lib/optimize/RuntimeChunkPlugin');
 const chalk = require('chalk');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
@@ -96,6 +97,11 @@ class BabelEsmPlugin {
         if (compiler.options.optimization.splitChunks) {
           new SplitChunksPlugin(
             Object.assign({}, compiler.options.optimization.splitChunks),
+          ).apply(childCompiler);
+        }
+        if (compiler.options.optimization.runtimeChunk) {
+          new RuntimeChunkPlugin(
+            Object.assign({}, compiler.options.optimization.runtimeChunk),
           ).apply(childCompiler);
         }
       }
