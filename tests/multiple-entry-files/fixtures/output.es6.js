@@ -96,11 +96,11 @@ module.exports = __webpack_require__(2);
 /* 1 */
 /***/ (function(module, exports) {
 
-let config = {
+var config = {
   a: 10,
   b: 20
 };
-const {
+var {
   a
 } = config;
 
@@ -108,8 +108,8 @@ const {
 /* 2 */
 /***/ (function(module, exports) {
 
-const init = [1, 2, 3, 4];
-const final = [...init, 5];
+var init = [1, 2, 3, 4];
+var final = [...init, 5];
 
 /***/ })
 /******/ ]);
