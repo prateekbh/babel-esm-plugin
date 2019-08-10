@@ -4,10 +4,14 @@ const MultiEntryPlugin = require('webpack/lib/MultiEntryPlugin');
 const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
 const SplitChunksPlugin = require('webpack/lib/optimize/SplitChunksPlugin');
 const RuntimeChunkPlugin = require('webpack/lib/optimize/RuntimeChunkPlugin');
-const chalk = require('chalk');
+
+const {
+  makeESMPresetOptions,
+  getBabelLoaderOptions,
+  getBabelLoader,
+} = require('./babel-utils');
 
 const PLUGIN_NAME = 'BabelEsmPlugin';
-const BABEL_LOADER_NAME = 'babel-loader';
 const FILENAME = '[name].es6.js';
 const CHUNK_FILENAME = '[id].es6.js';
 
@@ -27,10 +31,8 @@ class BabelEsmPlugin {
   apply(compiler) {
     compiler.hooks.make.tapAsync(PLUGIN_NAME, async (compilation, callback) => {
       const outputOptions = deepcopy(compiler.options);
-      this.babelLoaderConfigOptions_ = this.getBabelLoaderOptions(
-        outputOptions,
-      );
-      this.newConfigOptions_ = this.makeESMPresetOptions(
+      this.babelLoaderConfigOptions_ = getBabelLoaderOptions(outputOptions);
+      this.newConfigOptions_ = makeESMPresetOptions(
         this.babelLoaderConfigOptions_,
       );
       outputOptions.output.filename = this.options_.filename;
@@ -111,7 +113,7 @@ class BabelEsmPlugin {
         childProcessDone => {
           let babelLoader;
           childCompiler.options.module.rules.forEach((rule, index) => {
-            babelLoader = this.getBabelLoader(childCompiler.options);
+            babelLoader = getBabelLoader(childCompiler.options);
             babelLoader.options = this.newConfigOptions_;
           });
 
@@ -164,77 +166,6 @@ class BabelEsmPlugin {
       );
       callback();
     });
-  }
-
-  /**
-   * Returns a ref to babel-config
-   * @param {Object} config
-   */
-  getBabelLoader(config) {
-    let babelConfig = null;
-    config.module.rules.forEach(rule => {
-      if (!babelConfig) {
-        if (rule.use && Array.isArray(rule.use)) {
-          rule.use.forEach(rule => {
-            if (rule.loader.includes(BABEL_LOADER_NAME)) {
-              babelConfig = rule;
-            }
-          });
-        } else if (
-          (rule.use &&
-            rule.use.loader &&
-            rule.use.loader.includes(BABEL_LOADER_NAME)) ||
-          rule.loader.includes(BABEL_LOADER_NAME)
-        ) {
-          babelConfig = rule.use || rule;
-        }
-      }
-    });
-    if (!babelConfig) {
-      throw new Error('Babel-loader config not found!!!');
-    } else {
-      return babelConfig;
-    }
-  }
-
-  /**
-   * Returns a copy of current babel-loader config.
-   * @param {Object} config
-   */
-  getBabelLoaderOptions(config) {
-    return deepcopy(this.getBabelLoader(config).options);
-  }
-
-  /**
-   * Takes the current options and returns it with @babel/preset-env's target set to {"esmodules": true}.
-   * @param {Object} options
-   */
-  makeESMPresetOptions(options) {
-    let found = false;
-    options = options || {};
-    options.presets = options.presets || [];
-    options.presets.forEach(preset => {
-      if (!Array.isArray(preset)) return;
-      const [name, options] = preset;
-      if (
-        name.includes('@babel/preset-env') ||
-        name.includes('@babel\\preset-env')
-      ) {
-        found = true;
-        options.targets = options.targets || {};
-        options.targets = { esmodules: true };
-      }
-    });
-    if (!found) {
-      console.log(
-        chalk.yellow('Adding @babel/preset-env because it was not found'),
-      );
-      options.presets.push([
-        '@babel/preset-env',
-        { targets: { esmodules: true } },
-      ]);
-    }
-    return options;
   }
 }
 
