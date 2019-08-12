@@ -37,7 +37,6 @@ class BabelEsmPlugin {
       );
       outputOptions.output.filename = this.options_.filename;
       outputOptions.output.chunkFilename = this.options_.chunkFilename;
-      // Only copy over mini-extract-text-plugin (excluding it breaks extraction entirely)
       let plugins = (compiler.options.plugins || []).filter(
         c => this.options_.excludedPlugins.indexOf(c.constructor.name) < 0,
       );
@@ -68,6 +67,9 @@ class BabelEsmPlugin {
           plugin.apply(childCompiler);
         }
       }
+
+      // All plugin work is done, call the lifecycle hook.
+      childCompiler.hooks.afterPlugins.call(childCompiler);
 
       let entries = compiler.options.entry;
       if (typeof entries === 'function') {
