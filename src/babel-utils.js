@@ -12,7 +12,8 @@ const makeESMPresetOptions = options => {
   options.presets = options.presets || [];
   options.presets.forEach(preset => {
     if (!Array.isArray(preset)) return;
-    const [name, options] = preset;
+    let [name, options] = preset;
+    options = options || {};
     if (
       name.includes('@babel/preset-env') ||
       name.includes('@babel\\preset-env')
