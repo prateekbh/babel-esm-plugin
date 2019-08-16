@@ -4,7 +4,8 @@
   "description": "Add this plugin to generate mirrored esm modules for your existing bundles",
   "main": "src/index.js",
   "scripts": {
-    "test": "ava tests/**/*.test.js --verbose"
+    "test": "ava tests/**/*.test.js --verbose",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
