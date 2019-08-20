@@ -4,6 +4,7 @@ const MultiEntryPlugin = require('webpack/lib/MultiEntryPlugin');
 const JsonpTemplatePlugin = require('webpack/lib/web/JsonpTemplatePlugin');
 const SplitChunksPlugin = require('webpack/lib/optimize/SplitChunksPlugin');
 const RuntimeChunkPlugin = require('webpack/lib/optimize/RuntimeChunkPlugin');
+const { mergeAliases } = require('./webpack-utils');
 
 const {
   makeESMPresetOptions,
@@ -23,6 +24,7 @@ class BabelEsmPlugin {
         chunkFilename: CHUNK_FILENAME,
         excludedPlugins: [PLUGIN_NAME],
         additionalPlugins: [],
+        alias: {},
       },
       options,
     );
@@ -32,8 +34,13 @@ class BabelEsmPlugin {
     compiler.hooks.make.tapAsync(PLUGIN_NAME, async (compilation, callback) => {
       const outputOptions = deepcopy(compiler.options);
       this.babelLoaderConfigOptions_ = getBabelLoaderOptions(outputOptions);
+      const aliases = mergeAliases(
+        compiler.options.resolve.alias,
+        this.options_.alias,
+      );
       this.newConfigOptions_ = makeESMPresetOptions(
         this.babelLoaderConfigOptions_,
+        aliases,
       );
       outputOptions.output.filename = this.options_.filename;
       outputOptions.output.chunkFilename = this.options_.chunkFilename;

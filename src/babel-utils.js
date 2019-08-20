@@ -1,12 +1,12 @@
 const deepcopy = require('deepcopy');
 const chalk = require('chalk');
 const BABEL_LOADER_NAME = 'babel-loader';
-
+const webpackAliasPlugin = require('./plugin-webpack-alias');
 /**
  * Takes the current options and returns it with @babel/preset-env's target set to {"esmodules": true}.
  * @param {Object} options
  */
-const makeESMPresetOptions = options => {
+const makeESMPresetOptions = (options, alias) => {
   let found = false;
   options = options || {};
   options.presets = options.presets || [];
@@ -32,6 +32,7 @@ const makeESMPresetOptions = options => {
       { targets: { esmodules: true } },
     ]);
   }
+  options.plugins = [webpackAliasPlugin(alias)];
   return options;
 };
 
@@ -61,7 +62,7 @@ const getBabelLoader = config => {
         (rule.use &&
           rule.use.loader &&
           rule.use.loader.includes(BABEL_LOADER_NAME)) ||
-        rule.loader && rule.loader.includes(BABEL_LOADER_NAME)
+        (rule.loader && rule.loader.includes(BABEL_LOADER_NAME))
       ) {
         babelConfig = rule.use || rule;
       }
