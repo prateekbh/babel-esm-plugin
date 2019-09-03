@@ -125,6 +125,20 @@ class BabelEsmPlugin {
               (babelLoader || {}).options,
             );
 
+          /*
+           * Copy over the parent compilation hash, see issue#15.
+           */
+          childCompiler.hooks.make.tapAsync(
+            PLUGIN_NAME,
+            (childCompilation, callback) => {
+              childCompilation.hooks.afterHash.tap(PLUGIN_NAME, () => {
+                childCompilation.hash = compilation.hash;
+                childCompilation.fullHash = compilation.fullHash;
+              });
+              callback();
+            },
+          );
+
           childCompiler.runAsChild((err, entries, childCompilation) => {
             if (err) {
               return childProcessDone(err);
