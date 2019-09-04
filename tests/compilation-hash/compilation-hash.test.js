@@ -17,31 +17,8 @@ test('esm files are being generated', async t => {
     },
   });
   const compiler = getCompiler(config);
-  await runWebpack(compiler);
-  const es5FixtureFileContents = await readFile(
-    `${__dirname}/fixtures/output.js`,
-    {
-      encoding: 'utf-8',
-    },
-  );
-  const es5GeneratedFileContents = await readFile(
-    `${__dirname}/output/index.js`,
-    {
-      encoding: 'utf-8',
-    },
-  );
-  const esmFixtureFileContents = await readFile(
-    `${__dirname}/fixtures/output.es6.js`,
-    {
-      encoding: 'utf-8',
-    },
-  );
-  const esmGeneratedFileContents = await readFile(
-    `${__dirname}/output/index.es6.js`,
-    {
-      encoding: 'utf-8',
-    },
-  );
-  t.is(es5FixtureFileContents, es5GeneratedFileContents);
-  t.is(esmFixtureFileContents, esmGeneratedFileContents);
+  const { hash } = await runWebpack(compiler);
+  const files = fs.readdirSync(`${__dirname}/output/`);
+  t.is(files.length, 2);
+  t.deepEqual(files, [`index.${hash}.es6.js`, `index.${hash}.js`]);
 });
