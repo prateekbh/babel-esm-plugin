@@ -54,7 +54,7 @@ With this plugin added, you will be generating es6 outputs:
 
 ## How to use
 ```js
-  const BabelEsmPlugin = require('./babel-esm-plugin');
+  const BabelEsmPlugin = require('babel-esm-plugin');
 
   module.exports = {
     entry: {
