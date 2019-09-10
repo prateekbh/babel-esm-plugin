@@ -24,11 +24,7 @@ const defaultConfig = {
       },
     ],
   },
-  plugins: [
-    new BabelEsmPlugin({
-      filename: '[name].[hash].es6.js',
-    }),
-  ],
+  plugins: [new BabelEsmPlugin({})],
   optimization: {
     minimize: false,
   },
