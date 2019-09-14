@@ -9,41 +9,44 @@ const defaultConfig = {
         use: {
           loader: 'babel-loader',
           options: {
-            "presets": [["@babel/preset-env", {
-              "targets": {
-                "browsers": ["last 2 versions"]
-              }
-            }]]
+            presets: [
+              [
+                '@babel/preset-env',
+                {
+                  targets: {
+                    browsers: ['last 2 versions'],
+                  },
+                },
+              ],
+            ],
           },
         },
-      }
-    ]
+      },
+    ],
   },
-  plugins: [
-    new BabelEsmPlugin({})
-  ],
+  plugins: [new BabelEsmPlugin({})],
   optimization: {
-    minimize: false
+    minimize: false,
   },
 };
 
-const getCompiler = (config) => {
+const getCompiler = config => {
   return webpack(config);
-}
+};
 
-const runWebpack = async (compiler) => {
+const runWebpack = async compiler => {
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err || (stats && stats.hasErrors())) {
-				reject(err);
+        reject(err);
       }
       resolve(stats);
     });
   });
-}
+};
 
 module.exports = {
   defaultConfig,
   getCompiler,
-  runWebpack
-}
+  runWebpack,
+};
