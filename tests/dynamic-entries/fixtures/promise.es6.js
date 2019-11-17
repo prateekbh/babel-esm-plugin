@@ -88,11 +88,11 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-var config = {
+let config = {
   a: 10,
   b: 20
 };
-var {
+const {
   a
 } = config;
 

@@ -3,8 +3,8 @@
 /* 1 */
 /***/ (function(module, exports) {
 
-var init = [1, 2, 3, 4];
-var final = [...init, 5];
+const init = [1, 2, 3, 4];
+const final = [...init, 5];
 
 /***/ })
 ],[[1,0]]]);
