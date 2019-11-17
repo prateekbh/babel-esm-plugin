@@ -32,7 +32,10 @@ const makeESMPresetOptions = options => {
     return true;
   });
   if (!found) {
-    options.presets.push(['@babel/preset-modules', { loose: true }]);
+    options.presets.push([
+      '@babel/preset-modules',
+      { loose: true },
+    ]);
   }
   return options;
 };
