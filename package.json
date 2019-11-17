@@ -19,25 +19,25 @@
   },
   "homepage": "https://github.com/prateekbh/babel-esm-plugin#readme",
   "dependencies": {
-    "@babel/preset-modules": "^0.1.0",
-    "chalk": "^2.4.1",
-    "deepcopy": "^1.0.0"
+    "@babel/preset-modules": "0.1.0",
+    "chalk": "2.4.1",
+    "deepcopy": "1.0.0"
   },
   "peerDependencies": {
-    "webpack": "^4.28.4"
+    "webpack": "4.28.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-modules": "^0.1.0",
-    "ava": "^1.0.1",
-    "babel-loader": "^8.0.5",
-    "esm": "^3.0.84",
-    "husky": "^2.4.0",
-    "lint-staged": "^8.2.0",
-    "prettier": "^1.18.0",
-    "release-it": "^12.0.1",
-    "webpack": "^4.39.1",
-    "webpack-cli": "^3.2.1"
+    "@babel/core": "7.5.5",
+    "@babel/preset-modules": "0.1.0",
+    "ava": "1.0.1",
+    "babel-loader": "8.0.5",
+    "esm": "3.0.84",
+    "husky": "2.4.0",
+    "lint-staged": "8.2.0",
+    "prettier": "1.18.0",
+    "release-it": "12.0.1",
+    "webpack": "4.39.1",
+    "webpack-cli": "3.2.1"
   },
   "lint-staged": {
     "linters": {
