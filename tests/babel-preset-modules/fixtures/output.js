@@ -86,30 +86,19 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
-let config = {
-  a: 10,
-  b: 20
+var foo = function foo(_ref) {
+  var _ref$a = _ref.a,
+      a = _ref$a === void 0 ? 1 : _ref$a;
+  var b = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
+
+  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    args[_key - 2] = arguments[_key];
+  }
+
+  return [a, b, args];
 };
-const {
-  a
-} = config;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-const init = [1, 2, 3, 4];
-const final = [...init, 5];
 
 /***/ })
 /******/ ]);

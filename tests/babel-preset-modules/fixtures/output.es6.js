@@ -86,30 +86,11 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(1);
-module.exports = __webpack_require__(2);
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
-let config = {
-  a: 10,
-  b: 20
-};
-const {
-  a
-} = config;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-const init = [1, 2, 3, 4];
-const final = [...init, 5];
+const foo = ({
+  a: _a = 1
+}, b = 2, ...args) => [_a, b, args];
 
 /***/ })
 /******/ ]);

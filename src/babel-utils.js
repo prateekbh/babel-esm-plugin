@@ -66,7 +66,7 @@ const getBabelLoader = config => {
         (rule.use &&
           rule.use.loader &&
           rule.use.loader.includes(BABEL_LOADER_NAME)) ||
-        rule.loader && rule.loader.includes(BABEL_LOADER_NAME)
+        (rule.loader && rule.loader.includes(BABEL_LOADER_NAME))
       ) {
         babelConfig = rule.use || rule;
       }
