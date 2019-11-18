@@ -37,7 +37,6 @@ const getCompiler = config => {
 const runWebpack = async compiler => {
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
-      console.log(stats);
       if (err || (stats && stats.hasErrors())) {
         reject(err);
       }
