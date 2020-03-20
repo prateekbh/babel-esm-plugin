@@ -9,7 +9,6 @@ const BABEL_LOADER_NAME = 'babel-loader';
  *   "node_modules/@babel/preset-env/index.js"
  */
 const IS_PRESET_ENV = /((^|[\/\\])@babel[\/\\]preset-env([\/\\]|$)|^env$)/;
-const IS_PRESET_MODULES = /((^|[\/\\])@babel[\/\\]preset-modules([\/\\]|$)|^modules)/;
 
 /**
  * Takes the current options and returns it with @babel/preset-env's target set to {"esmodules": true}.
@@ -20,21 +19,22 @@ const makeESMPresetOptions = options => {
   options = options || {};
   options.presets = (options.presets || []).filter(preset => {
     const name = Array.isArray(preset) ? preset[0] : preset;
-    if (IS_PRESET_ENV.test(name)) {
-      return false;
-    }
-    if (IS_PRESET_MODULES.test(name)) {
+    if (IS_PRESET_ENV.test(name) && preset[1]) {
       found = true;
-      console.log(
-        chalk.yellow('Re-using existing @babel/preset-modules configuration.'),
-      );
+      let presetOptions = preset[1];
+      presetOptions.targets = presetOptions.targets || {};
+      presetOptions.targets = { esmodules: true };
+      presetOptions.bugfixes = true;
     }
     return true;
   });
   if (!found) {
+    console.log(
+      chalk.yellow('Adding @babel/preset-env because it was not found'),
+    );
     options.presets.push([
-      '@babel/preset-modules',
-      { loose: true },
+      '@babel/preset-env',
+      { targets: { esmodules: true } },
     ]);
   }
   return options;
