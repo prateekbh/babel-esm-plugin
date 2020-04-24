@@ -34,7 +34,10 @@ const makeESMPresetOptions = options => {
     );
     options.presets.push([
       '@babel/preset-env',
-      { targets: { esmodules: true } },
+      {
+        targets: { esmodules: true },
+        bugfixes: true,
+      },
     ]);
   }
   return options;
