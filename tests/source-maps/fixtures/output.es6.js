@@ -88,14 +88,16 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-  var config = {
-    a: 10,
-    b: 20
-  };
-  var a = config.a;
-  var init = [1, 2, 3, 4];
-  var final = [].concat(init, [5]);
+let config = {
+  a: 10,
+  b: 20
+};
+const {
+  a
+} = config;
+const init = [1, 2, 3, 4];
+const final = [...init, 5];
 
-  /***/ })
-  /******/ ]);
-  //# sourceMappingURL=index.js.map
+/***/ })
+/******/ ]);
+//# sourceMappingURL=index.es6.js.map
