@@ -148,7 +148,7 @@ class BabelEsmPlugin {
               return childProcessDone(childCompilation.errors[0]);
             }
 
-            compilation.hooks.afterOptimizeAssets.tapAsync(PLUGIN_NAME, () => {
+            compilation.hooks.afterOptimizeAssets.tap(PLUGIN_NAME, () => {
               compilation.assets = Object.assign(
                 childCompilation.assets,
                 compilation.assets,

@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const BabelEsmPlugin = require('../src/index');
 
 const defaultConfig = {
+  devtool: 'source-map',
   module: {
     rules: [
       {

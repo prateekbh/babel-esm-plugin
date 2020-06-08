@@ -25,6 +25,11 @@ test('esm files are being generated', async t => {
   const compiler = getCompiler(config);
   const { hash } = await runWebpack(compiler);
   const files = fs.readdirSync(`${__dirname}/output/`);
-  t.is(files.length, 2);
-  t.deepEqual(files, [`index.${hash}.es6.js`, `index.${hash}.js`]);
+  t.is(files.length, 4);
+  t.deepEqual(files, [
+    `index.${hash}.es6.js`,
+    `index.${hash}.es6.js.map`,
+    `index.${hash}.js`,
+    `index.${hash}.js.map`,
+  ]);
 });

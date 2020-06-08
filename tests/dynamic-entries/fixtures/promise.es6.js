@@ -98,3 +98,4 @@ const {
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=promise.es6.js.map

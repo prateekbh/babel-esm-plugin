@@ -96,3 +96,4 @@ var a = config.a;
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=promise.js.map
