@@ -5,18 +5,17 @@ import { promisify } from 'util';
 
 const readFile = promisify(fs.readFile);
 
-test('babel-preset-modules is being tested', t => {
+test('source-maps is being tested', t => {
   t.pass();
 });
 test('esm files are being generated', async t => {
   const config = Object.assign({}, defaultConfig, {
-    entry: {
-      index: './tests/babel-preset-modules/fixtures/index.js',
-    },
+    entry: './tests/source-maps/fixtures/index.js',
     output: {
       path: `${__dirname}/output`,
       filename: 'index.js',
     },
+    devtool: 'source-map',
   });
   const compiler = getCompiler(config);
   await runWebpack(compiler);

@@ -100,3 +100,4 @@ const final = [...init, 5];
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=index.es6.js.map

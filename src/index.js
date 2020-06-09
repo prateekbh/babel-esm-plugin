@@ -148,32 +148,34 @@ class BabelEsmPlugin {
               return childProcessDone(childCompilation.errors[0]);
             }
 
-            compilation.assets = Object.assign(
-              childCompilation.assets,
-              compilation.assets,
-            );
+            compilation.hooks.afterOptimizeAssets.tap(PLUGIN_NAME, () => {
+              compilation.assets = Object.assign(
+                childCompilation.assets,
+                compilation.assets,
+              );
 
-            compilation.namedChunkGroups = Object.assign(
-              childCompilation.namedChunkGroups,
-              compilation.namedChunkGroups,
-            );
+              compilation.namedChunkGroups = Object.assign(
+                childCompilation.namedChunkGroups,
+                compilation.namedChunkGroups,
+              );
 
-            const childChunkFileMap = childCompilation.chunks.reduce(
-              (chunkMap, chunk) => {
-                chunkMap[chunk.name] = chunk.files;
-                return chunkMap;
-              },
-              {},
-            );
+              const childChunkFileMap = childCompilation.chunks.reduce(
+                (chunkMap, chunk) => {
+                  chunkMap[chunk.name] = chunk.files;
+                  return chunkMap;
+                },
+                {},
+              );
 
-            compilation.chunks.forEach(chunk => {
-              const childChunkFiles = childChunkFileMap[chunk.name];
+              compilation.chunks.forEach(chunk => {
+                const childChunkFiles = childChunkFileMap[chunk.name];
 
-              if (childChunkFiles) {
-                chunk.files.push(
-                  ...childChunkFiles.filter(v => !chunk.files.includes(v)),
-                );
-              }
+                if (childChunkFiles) {
+                  chunk.files.push(
+                    ...childChunkFiles.filter(v => !chunk.files.includes(v)),
+                  );
+                }
+              });
             });
 
             childProcessDone();

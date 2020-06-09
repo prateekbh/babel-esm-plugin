@@ -88,9 +88,14 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-const foo = ({
-  a: _a = 1
-}, b = 2, ...args) => [_a, b, args];
+var config = {
+  a: 10,
+  b: 20
+};
+var a = config.a;
+var init = [1, 2, 3, 4];
+var final = [].concat(init, [5]);
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=index.js.map

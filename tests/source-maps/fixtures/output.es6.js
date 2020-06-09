@@ -88,17 +88,16 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-var foo = function foo(_ref) {
-  var _ref$a = _ref.a,
-      a = _ref$a === void 0 ? 1 : _ref$a;
-  var b = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
-
-  for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
-    args[_key - 2] = arguments[_key];
-  }
-
-  return [a, b, args];
+let config = {
+  a: 10,
+  b: 20
 };
+const {
+  a
+} = config;
+const init = [1, 2, 3, 4];
+const final = [...init, 5];
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=index.es6.js.map
