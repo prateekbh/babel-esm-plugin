@@ -26,6 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: cat package.json | jq '.devDependencies.webpack = "^5.0.0-beta.30"' > package.json.tmp && mv package.json.tmp package.json
     - run: cat package.json
-    - run: yarn install --frozen-lockfile --check-files
+    - run: yarn install
     - run: yarn why webpack
     - run: yarn test
