@@ -24,6 +24,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: cat package.json | jq '.resolutions.webpack = "^5.0.0-beta.30"' > package.json.tmp && mv package.json.tmp package.json
+    - run: cat package.json
+    - run: yarn install --frozen-lockfile --check-files
+    - run: yarn test
