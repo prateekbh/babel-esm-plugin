@@ -72,6 +72,12 @@ const getBabelLoader = config => {
         (rule.loader && rule.loader.includes(BABEL_LOADER_NAME))
       ) {
         babelConfig = rule.use || rule;
+      } else if (rule.oneOf && Array.isArray(rule.oneOf)) {
+        rule.oneOf.forEach((rule) => {
+          if (rule.loader && rule.loader.includes(BABEL_LOADER_NAME)) {
+            babelConfig = rule;
+          }
+        });
       }
     }
   });
