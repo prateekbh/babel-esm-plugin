@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
+        webpack-version: [latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,8 +25,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cat package.json | jq '.devDependencies.webpack = "^5.0.0-beta.30"' > package.json.tmp && mv package.json.tmp package.json
-    - run: cat package.json
     - run: yarn install
+    - name: Install webpack ${{ matrix.webpack-version }}
+      run: yarn add -W webpack@${{ matrix.webpack-version }}
     - run: yarn why webpack
     - run: yarn test
